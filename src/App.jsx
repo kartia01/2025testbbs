@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import supabase from './utils/supabase';
+import dayjs from 'dayjs';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -21,7 +22,9 @@ function App() {
       <h3>post</h3>
       <ul>
         {posts.map((post, i) => (
-          <li key={i}>{post.TITLE}</li>
+          <li key={i}>
+            {post.NAME} / {post.TITLE} / {post.CONTENT} / {dayjs(post.created_at).format('YYYY-MM-DD')}
+          </li>
         ))}
       </ul>
     </div>
