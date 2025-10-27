@@ -1,33 +1,22 @@
 import { useState, useEffect } from 'react';
-import supabase from './utils/supabase';
-import dayjs from 'dayjs';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Boardlist from './assets/components/Board/Boardlist';
+import HomeComp from './assets/components/Board/HomeComp';
+import Boardview from './assets/components/Board/Boardview';
+import MenuComp from './assets/components/Board/MenuComp';
 
 function App() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    async function getPosts() {
-      const { data: posts } = await supabase.from('posts').select();
-
-      setPosts(posts);
-
-      console.log(posts);
-    }
-
-    getPosts();
-  }, []);
-
   return (
-    <div>
-      <h3>post</h3>
-      <ul>
-        {posts.map((post, i) => (
-          <li key={i}>
-            {post.NAME} / {post.TITLE} / {post.CONTENT} / {dayjs(post.created_at).format('YYYY-MM-DD')}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <BrowserRouter>
+    <MenuComp />
+      <div className='container'>
+        <Routes>
+          <Route path="/" element={<HomeComp />} />
+          <Route path="/list" element={<Boardlist />} />
+          <Route path="/view" element={<Boardview />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 export default App;
