@@ -35,19 +35,13 @@ function App() {
 
                 <li className="nav-item">
                   <Link className="nav-link active" aria-current="page" to="/about">
-                    about
+                    About
                   </Link>
                 </li>
 
                 <li className="nav-item">
                   <Link className="nav-link active" aria-current="page" to="/list">
-                    List
-                  </Link>
-                </li>
-
-                <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/view">
-                    View
+                    Board
                   </Link>
                 </li>
               </ul>
