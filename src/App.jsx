@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import HomeComp from './components/HomeComp';
-import Boardlist from './components/Board/Boardlist';
-import Boardview from './components/Board/Boardview';
 import AboutComp from './components/about/AboutComp';
+import BoardComp from './components/Board/BoardComp';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import './App.css';
 
 function App() {
   return (
@@ -48,13 +51,14 @@ function App() {
             </div>
           </div>
         </nav>
+
         <Routes>
           <Route path="/" element={<HomeComp />} />
           <Route path="/about/*" element={<AboutComp />} />
-          <Route path="/list/*" element={<Boardlist />} />
-          <Route path="/view/*" element={<Boardview />} />
+          <Route path="/board/*" element={<BoardComp />} />
         </Routes>
       </div>
+      <div className="container">footer</div>
     </BrowserRouter>
   );
 }
