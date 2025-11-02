@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import HomeComp from './components/HomeComp';
-import AboutComp from './components/about/AboutComp';
-import BoardComp from './components/Board/BoardComp';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import './App.css';
+import { useState, useEffect } from "react";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import HomeComp from "./components/HomeComp";
+import AboutComp from "./components/about/AboutComp";
+import BoardComp from "./components/Board/BoardComp";
+
 
 function App() {
   return (
@@ -28,7 +25,10 @@ function App() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
                   <Link className="nav-link active" aria-current="page" to="/">
@@ -37,13 +37,21 @@ function App() {
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/about">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/about"
+                  >
                     About
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/list">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/list"
+                  >
                     Board
                   </Link>
                 </li>
