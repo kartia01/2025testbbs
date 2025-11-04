@@ -1,12 +1,19 @@
-import dayjs from 'dayjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { useBoard } from '../context/BoardContext';
 
-function ListComp({ posts }) {
+function ListComp() {
+  const { posts } = useBoard();
+
+  if (!posts.length) {
+    return <p>게시물이 없습니다.</p>;
+  }
+
   return (
     <div>
-      <h3>post</h3>
-      <table class="table">
+      <h3>리스트</h3>
+      <table className="table">
         <thead>
           <tr>
             <th scope="col" style={{ width: '30px' }}>
@@ -21,16 +28,18 @@ function ListComp({ posts }) {
         </thead>
         <tbody>
           {posts.map((item, i) => {
-            <tr key={i}>
-              <th scope="row">{posts.length - i}</th>
-              <td>
-                <Link to={`/board/view/${item.id}`} className="nav-link">
-                  {item.title}
-                </Link>
-              </td>
-              <td>{item.name}</td>
-              <td>{dayjs(item.created_at).format('YY-MM-DD')}</td>
-            </tr>;
+            return (
+              <tr key={i}>
+                <th scope="row">{posts.length - i}</th>
+                <td>
+                  <Link to={`/board/view/${item.id}`} className="nav-link">
+                    {item.title}
+                  </Link>
+                </td>
+                <td>{item.name}</td>
+                <td>{dayjs(item.created_at).format('YY-MM-DD')}</td>
+              </tr>
+            );
           })}
         </tbody>
       </table>

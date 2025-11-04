@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import supabase from '../../utils/supabase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useBoard } from '../context/BoardContext';
 
-function WriteComp({ getPosts }) {
+function WriteComp() {
+  const { getPosts } = useBoard();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
@@ -57,7 +59,7 @@ function WriteComp({ getPosts }) {
               onChange={eventHandler}
             />
           </div>
-          <div></div>
+          <div>{formData.title}</div>
 
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
@@ -73,7 +75,7 @@ function WriteComp({ getPosts }) {
               onChange={eventHandler}
             />
           </div>
-          <div></div>
+          <div>{formData.name}</div>
 
           <div className="mb-3">
             <label htmlFor="content" className="form-label">

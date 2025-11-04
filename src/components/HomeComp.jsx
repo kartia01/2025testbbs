@@ -32,6 +32,8 @@ function HomeComp() {
               Slide 5
             </SwiperSlide>
           </Swiper>
+
+          <div className="container">footer</div>
     </div>
   )
 }
