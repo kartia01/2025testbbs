@@ -3,6 +3,8 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import HomeComp from './components/HomeComp';
 import AboutComp from './components/about/AboutComp';
 import BoardComp from './components/Board/BoardComp';
+import MemberComp from './components/Member/MemberComp';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -43,6 +45,12 @@ function App() {
                     Board
                   </Link>
                 </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/member">
+                    Member
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -52,12 +60,25 @@ function App() {
           <Route path="/" element={<HomeComp />} />
           <Route path="/about/*" element={<AboutComp />} />
           <Route path="/board/*" element={<BoardComp />} />
+          <Route path="/member/*" element={<MemberComp />} />
         </Routes>
       </div>
 
       <div className="container-fluid py-3 mt-3" style={{ background: 'rgba(218, 218, 218, 1)' }}>
         <div className="container">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt, tempora!</div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </BrowserRouter>
   );
 }
