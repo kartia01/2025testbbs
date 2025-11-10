@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useBoard } from '../context/BoardContext';
+import { useBoard } from '../../components/context/BoardContext';
 
 function ListComp() {
   const { posts } = useBoard();

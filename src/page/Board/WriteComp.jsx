@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import supabase from '../../utils/supabase';
 import { Link, useNavigate } from 'react-router-dom';
-import { useBoard } from '../context/BoardContext';
+import { useBoard } from '../../components/context/BoardContext';
 
 function WriteComp() {
   const { getPosts } = useBoard();

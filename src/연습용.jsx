@@ -1,24 +1,22 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import supabase from '../../utils/supabase';
+import { createContext, useContext, useState } from 'react';
+import supabase from './utils/supabase';
 
 const UserContext = createContext();
 
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error('userPovider 내부에 있어야 해요!!! ');
+    throw new Error('userPovider 내부에 있어야 해요');
   }
   return context;
 };
 
 export const UserProvider = ({ children }) => {
-  // const [text, setText] = useState('안녕하세요');
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   const fetchUserInfo = async (userId) => {
     const { data, error } = await supabase.from('user_table').select('*').eq('id', userId).single();
-
     if (error) return null;
     return data;
   };
@@ -27,7 +25,6 @@ export const UserProvider = ({ children }) => {
     console.log('session 준비');
     const loadUser = async () => {
       const { data } = await supabase.auth.getSession();
-      //  const session = data;
       console.log(data);
 
       const session = data?.session ?? null;
@@ -40,24 +37,17 @@ export const UserProvider = ({ children }) => {
         const extra = await fetchUserInfo(session?.user.id);
         setUser({ ...session.user, ...extra });
       }
-      // setUser(session?.user ?? null);
-
-      // console.log(session?.user.id);
     };
     loadUser();
   }, [loading]);
 
   const signUp = async (email, password, name, phone, text) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
+    const { data, error } = await supabase.auth.signUp({ email: email, password: password });
 
     if (!error) {
       const { error: userError } = await supabase
         .from('user_table')
         .insert([{ id: data.user.id, name: name, phone: phone, text: text }])
-        // data.user.id = supabase의 auth의 uuid 32
         .select();
 
       if (!userError) {
@@ -71,10 +61,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (!error) {
       return { error: null };

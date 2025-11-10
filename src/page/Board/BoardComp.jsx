@@ -4,7 +4,7 @@ import WriteComp from './WriteComp';
 import ViewComp from './ViewComp';
 import ModiComp from './ModiComp';
 import { Link, Route, Routes } from 'react-router-dom';
-import { BoardProvider } from '../context/BoardContext';
+import { BoardProvider } from '../../components/context/BoardContext';
 
 function BoardComp() {
   return (
