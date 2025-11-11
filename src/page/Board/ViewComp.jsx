@@ -4,8 +4,9 @@ import supabase from '../../utils/supabase';
 import dayjs from 'dayjs';
 
 function ViewComp() {
+  const params = useParams();
   const { id } = useParams();
-
+  console.log(params);
   const [view, setView] = useState({});
 
   useEffect(() => {

@@ -2,14 +2,22 @@ import React, { useState } from 'react';
 import supabase from '../../utils/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { useBoard } from '../../components/context/BoardContext';
+import { useUser } from '../../components/context/UserContext';
 
 function WriteComp() {
+  const { user } = useUser();
+
+  if (!user) {
+    return <p>로그인 후 이용 가능합니다.</p>;
+  }
+
   const { getPosts } = useBoard();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
-    name: '',
+    name: user?.name ?? '',
     content: '',
+    user_id: user.id,
   });
 
   const eventHandler = (e) => {
@@ -28,15 +36,15 @@ function WriteComp() {
     const createWrite = async () => {
       const { data, error } = await supabase
         .from('posts')
-        .insert([{ title: formData.title, name: formData.name, content: formData.content }])
+        .insert([{ title: formData.title, name: formData.name, content: formData.content, user_id: formData.user_id }])
         .select();
+
       if (!error) {
         alert('글작성성공');
         navigate('/board/list');
         getPosts();
       }
     };
-
     createWrite();
   };
 
@@ -60,7 +68,6 @@ function WriteComp() {
             />
           </div>
           <div>{formData.title}</div>
-
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               이름
@@ -73,15 +80,16 @@ function WriteComp() {
               placeholder="이름을 입력하세요"
               required
               onChange={eventHandler}
+              value={user?.name ?? ''}
+              disabled={user?.name}
             />
           </div>
           <div>{formData.name}</div>
-
           <div className="mb-3">
             <label htmlFor="content" className="form-label">
               내용
             </label>
-            <input
+            <textarea
               type="text"
               id="content"
               name="content"
@@ -92,6 +100,7 @@ function WriteComp() {
               onChange={eventHandler}
             />
           </div>
+          <div>{formData.content}</div>
           <div className="d-flex jusify-content-end">
             <div className="d-flex gap-2">
               <Link to="/board/list" className="btn btn-danger">

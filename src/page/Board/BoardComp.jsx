@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import ListComp from './ListComp';
 import WriteComp from './WriteComp';
 import ViewComp from './ViewComp';

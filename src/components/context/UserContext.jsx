@@ -23,7 +23,9 @@ export const UserProvider = ({ children }) => {
     return data;
   };
 
+  // ★★★★★
   useEffect(() => {
+    let mounted = true;
     console.log('session 준비');
     const loadUser = async () => {
       const { data } = await supabase.auth.getSession();
@@ -40,12 +42,26 @@ export const UserProvider = ({ children }) => {
         const extra = await fetchUserInfo(session?.user.id);
         setUser({ ...session.user, ...extra });
       }
-      // setUser(session?.user ?? null);
 
-      // console.log(session?.user.id);
+      const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
+        // data:sub = data란 이름은 sub로 대신 사용
+        if (!mounted) return;
+
+        if (session?.user) {
+          const extra = await fetchUserInfo(session?.user.id);
+          setUser({ ...session.user, ...extra });
+        } else {
+          setUser(null);
+        }
+      });
+      // useEffect의 이벤트성을 정지시킨다.
+      return () => {
+        mounted = false;
+        sub?.subscription?.unsubscribe?.();
+      };
     };
     loadUser();
-  }, [loading]);
+  }, []);
 
   const signUp = async (email, password, name, phone, text) => {
     const { data, error } = await supabase.auth.signUp({
@@ -89,7 +105,6 @@ export const UserProvider = ({ children }) => {
 
   const value = {
     loading,
-    user,
     signUp,
     signIn,
     signOut,

@@ -5,8 +5,8 @@ import { useBoard } from '../../components/context/BoardContext';
 
 function ModiComp() {
   const { id } = useParams;
-  const navigate = useNavigate();
   const { getPosts } = useBoard(); // context api
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     name: '',
@@ -83,7 +83,6 @@ function ModiComp() {
             />
           </div>
           <div>{formData.title}</div>
-
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               이름
@@ -100,7 +99,6 @@ function ModiComp() {
             />
           </div>
           <div>{formData.name}</div>
-
           <div className="mb-3">
             <label htmlFor="content" className="form-label">
               내용
