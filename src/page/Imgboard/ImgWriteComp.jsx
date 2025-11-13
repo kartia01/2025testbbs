@@ -1,17 +1,24 @@
 import React, { useRef, useState } from 'react';
+import { useImg } from '../../components/context/ImgContext';
+import { Link, useNavigate } from 'react-router-dom';
 import supabase from '../../utils/supabase';
+import { useUser } from '../../components/context/UserContext';
 import { toast } from 'react-toastify';
 
-function ImageComp() {
+function ImgWriteComp() {
+  const { user } = useUser();
+
+  if (!user) {
+    return <p>로그인 후 이용 가능합니다.</p>;
+  }
+
   const [selectfile, setSelectfile] = useState(null);
   const [message, setMessage] = useState('');
   const [uploadUrl, setUploadUrl] = useState('');
   const [fileName, setFileName] = useState('+');
 
-  // 미리보기 state
   const [preview, setPreview] = useState('');
 
-  // 미리보기 삭제를 위한 ref
   const fileInputRef = useRef(null);
 
   const fileChangeHandler = (e) => {
@@ -33,12 +40,8 @@ function ImageComp() {
     }
 
     const bucket = 'images';
-    const table = 'image_upload';
+    const table = 'imgboard';
     const filepath = `${Date.now()}_${selectfile.name}`;
-
-    // 파일이름을 uuid + "_" + selectFile.name -> 1888... .png
-    // 파일이름을 날짜 + "_" + selectFile.name -> 20251112 .png
-    // 파일이름을 난수 + "_" + selectFile.name
 
     const { error } = await supabase.storage.from(bucket).upload(filepath, selectfile);
 
@@ -46,9 +49,7 @@ function ImageComp() {
       setMessage('업로드실패 : ' + error.message);
       return;
     } else {
-      // 파일경로전달받음
       const { data, error: urlErr } = await supabase.storage.from(bucket).getPublicUrl(filepath);
-      // console.log(data.publicUrl);
       setUploadUrl(data.publicUrl);
 
       if (!urlErr) {
@@ -70,9 +71,56 @@ function ImageComp() {
     fileInputRef.current.value = '';
   };
 
+  const { getImg } = useImg();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    name: user?.name ?? '',
+    content: '',
+    filename: fileName,
+    fileurl: uploadUrl,
+    user_id: user.id,
+  });
+
+  const eventHandler = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const ClickHandler = (e) => {
+    e.preventDefault();
+    const createWrite = async () => {
+      const { data, error } = await supabase
+        .from('imgboard')
+        .insert([
+          {
+            title: formData.title,
+            name: formData.name,
+            content: formData.content,
+            filename: fileName,
+            fileurl: uploadUrl,
+            user_id: formData.user_id,
+          },
+        ])
+        .select();
+
+      if (!error) {
+        alert('글작성성공');
+        navigate('/img/imglist');
+        getImg();
+      }
+    };
+    createWrite();
+  };
+
   return (
-    <div>
-      <h3>이미지 업로드</h3>
+    <div className="container">
+      <h3>글작성</h3>
       <div>
         <form onSubmit={submitHandler}>
           <div style={{ position: 'relative' }}>
@@ -126,9 +174,66 @@ function ImageComp() {
           <div>{message && <p className="text-danger mt-2">{message}</p>}</div>
           <div>{uploadUrl && <p className="text-danger mt-2">{uploadUrl}</p>}</div>
         </form>
+        <form onSubmit={ClickHandler}>
+          <div>
+            <label htmlFor="title" className="form-label">
+              제목
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              className="form-control"
+              placeholder="제목을 입력하세요"
+              required
+              onChange={eventHandler}
+            />
+          </div>
+          <div>{formData.title}</div>
+          <div>
+            <label htmlFor="name" className="form-label">
+              이름
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="form-control"
+              placeholder="이름을 입력하세요"
+              required
+              onChange={eventHandler}
+              value={user?.name ?? ''}
+              disabled={user?.name}
+            />
+          </div>
+          <div>{formData.name}</div>
+          <div>
+            <label htmlFor="content" className="form-label">
+              내용
+            </label>
+            <textarea
+              type="text"
+              id="content"
+              name="content"
+              className="form-control"
+              placeholder="내용을 입력하세요"
+              rows="6"
+              required
+              onChange={eventHandler}
+            />
+          </div>
+          <div className="d-flex justify-content-end mt-3">
+            <div className="d-flex gap-2">
+              <Link to="/img/imglist" className="btn btn-danger">
+                취소
+              </Link>
+              <button className="btn btn-primary">글작성</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );
 }
 
-export default ImageComp;
+export default ImgWriteComp;

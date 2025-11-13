@@ -23,6 +23,7 @@ function BoardComp() {
           <Link to="../board/write" className="nav-link">
             글작성
           </Link>
+
         </div>
         <Routes>
           <Route index element={<ListComp />}></Route>

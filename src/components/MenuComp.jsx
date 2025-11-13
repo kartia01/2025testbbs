@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from './context/UserContext';
 
 function MenuComp() {
-  const { signUp, text, user, signOut, setLoading } = useUser();
+  const { user, signOut } = useUser();
 
   return (
     <>
@@ -42,6 +42,12 @@ function MenuComp() {
               <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to="/board">
                   Board
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="/img">
+                  Image
                 </Link>
               </li>
 

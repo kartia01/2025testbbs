@@ -12,7 +12,6 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
-  // const [text, setText] = useState('안녕하세요');
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -105,6 +104,7 @@ export const UserProvider = ({ children }) => {
 
   const value = {
     loading,
+    user,
     signUp,
     signIn,
     signOut,
