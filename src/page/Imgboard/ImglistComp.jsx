@@ -13,7 +13,7 @@ function ImglistComp() {
       <div className="row">
         {iboard && iboard.length > 0 ? (
           iboard.map((item, i) => (
-            <div className="col-12 col-md-4" key={i}>
+            <div className="col-12 col-md-4 mb-3" key={i}>
               <Link
                 to={`/img/imgview/${item.id}`}
                 className="nav-link border border-1"
